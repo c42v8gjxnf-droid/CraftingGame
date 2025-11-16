@@ -45,10 +45,14 @@ public class ShortcutMenuController : MonoBehaviour
     [Header("Targets")]
     public PanelToggle inventoryToggle;
     public PanelToggle craftingToggle;
+    public PanelToggle skillToggle;
+    public PanelToggle techToggle;
 
     [Header("Shortcuts (konfigurierbar im Inspector)")]
     public KeyShortcut inventoryShortcut = new KeyShortcut { key = KeyCode.I };
     public KeyShortcut craftingShortcut  = new KeyShortcut { key = KeyCode.C };
+    public KeyShortcut skillShortcut     = new KeyShortcut { key = KeyCode.K }; // Skills
+    public KeyShortcut techShortcut      = new KeyShortcut { key = KeyCode.T }; // Tech
 
     [Header("Debug")]
     public bool logWhenTriggered = false;
@@ -68,6 +72,18 @@ public class ShortcutMenuController : MonoBehaviour
         {
             if (logWhenTriggered) Debug.Log("[Shortcuts] Crafting toggle");
             craftingToggle?.Toggle();
+        }
+
+        if (skillShortcut.IsPressedThisFrame())
+        {
+            if (logWhenTriggered) Debug.Log("[Shortcuts] Skill toggle");
+            skillToggle?.Toggle();
+        }
+
+        if (techShortcut.IsPressedThisFrame())
+        {
+            if (logWhenTriggered) Debug.Log("[Shortcuts] Tech toggle");
+            techToggle?.Toggle();
         }
     }
 }

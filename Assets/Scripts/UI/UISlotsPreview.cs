@@ -3,29 +3,45 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+// Preview temporärer Slots im Editor (keine Runtime-Objekte; Playmode räumt auf)
 [ExecuteAlways]
 public class UISlotsPreview : MonoBehaviour
 {
     public enum CountMode { Fixed, FromInventoryCapacity }
 
     [Header("Setup")]
-    public Transform slotParent;
-    public GameObject slotPrefab;
+    public Transform slotParent;        // meist dein Panel mit GridLayoutGroup
+    public GameObject slotPrefab;       // dein Slot-Prefab
     public CountMode countMode = CountMode.Fixed;
-    public int fixedCount = 16;
-    public Inventory inventorySource;
+    public int fixedCount = 16;         // z.B. 16 fürs Crafting
+    public Inventory inventorySource;   // nur für FromInventoryCapacity
 
     [Header("Preview")]
     public bool showPreviewInEditMode = true;
-    public Sprite placeholderIcon;
+    public Sprite placeholderIcon;      // optional hübsches Dummy-Icon
     public bool disableInteractiveComponents = true;
 
+#if UNITY_EDITOR
+    const string PreviewName = "Slot (Preview)";
+    bool pendingRebuild;   // OnValidate -> in Update ausführen
     bool wasPlaying;
+#endif
 
     void Reset() { slotParent = transform; }
 
-    void OnEnable()  { UpdatePreview(); }
-    void OnDisable() { ClearPreview(); }
+    void OnEnable()
+    {
+#if UNITY_EDITOR
+        RequestRebuild();
+#endif
+    }
+
+    void OnDisable()
+    {
+#if UNITY_EDITOR
+        ClearPreview();
+#endif
+    }
 
     void Update()
     {
@@ -37,43 +53,52 @@ public class UISlotsPreview : MonoBehaviour
         }
         wasPlaying = false;
 
-        if (showPreviewInEditMode) EnsurePreviewCount();
+        if (!showPreviewInEditMode)
+        {
+            if (CountPreviewChildren() > 0) ClearPreview();
+            return;
+        }
+
+        if (pendingRebuild)
+        {
+            pendingRebuild = false;
+            RebuildNow();
+        }
 #endif
     }
 
     void OnValidate()
     {
 #if UNITY_EDITOR
-        if (!Application.isPlaying && isActiveAndEnabled) UpdatePreview();
-#endif
-    }
-
-    public void UpdatePreview()
-    {
-#if UNITY_EDITOR
-        if (Application.isPlaying) { ClearPreview(); return; }
-        if (!showPreviewInEditMode || !slotParent || !slotPrefab) { ClearPreview(); return; }
-        EnsurePreviewCount();
+        // NUR markieren; kein Erzeugen/Löschen hier (Unity verbietet AddComponent/Instantiate)
+        RequestRebuild();
 #endif
     }
 
 #if UNITY_EDITOR
-    void EnsurePreviewCount()
+    void RequestRebuild() => pendingRebuild = true;
+
+    void RebuildNow()
     {
+        if (!slotParent || !slotPrefab) return;
+
         int want = (countMode == CountMode.FromInventoryCapacity && inventorySource)
-            ? Mathf.Max(0, inventorySource.capacity)
-            : Mathf.Max(0, fixedCount);
+                 ? Mathf.Max(0, inventorySource.capacity)
+                 : Mathf.Max(0, fixedCount);
 
         int have = CountPreviewChildren();
+
         if (have > want) RemovePreviewChildren(have - want);
         else if (have < want) AddPreviewChildren(want - have);
+        // sonst passt's
     }
 
     int CountPreviewChildren()
     {
         int c = 0;
+        if (!slotParent) return 0;
         foreach (Transform t in slotParent)
-            if (t.GetComponent<PreviewMarker>()) c++;
+            if (t && t.name == PreviewName) c++;
         return c;
     }
 
@@ -82,7 +107,7 @@ public class UISlotsPreview : MonoBehaviour
         for (int i = slotParent.childCount - 1; i >= 0 && count > 0; i--)
         {
             var child = slotParent.GetChild(i);
-            if (!child.GetComponent<PreviewMarker>()) continue;
+            if (!child || child.name != PreviewName) continue;
             Undo.DestroyObjectImmediate(child.gameObject);
             count--;
         }
@@ -92,20 +117,29 @@ public class UISlotsPreview : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
+            // Prefab-instantiate im Editor
             GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(slotPrefab, slotParent);
             if (!go) go = (GameObject)Object.Instantiate(slotPrefab, slotParent);
 
-            go.name = "Slot (Preview)";
-            if (!go.GetComponent<PreviewMarker>()) go.AddComponent<PreviewMarker>();
+            go.name = PreviewName;
+            go.hideFlags |= HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
 
             if (disableInteractiveComponents)
             {
+                // Deaktiviert ItemSlotUI und gängige UI-Interaktionen
                 var slotUI = go.GetComponent<ItemSlotUI>();
                 if (slotUI) slotUI.enabled = false;
                 foreach (var sel in go.GetComponentsInChildren<UnityEngine.UI.Selectable>(true))
                     sel.enabled = false;
+                foreach (var g in go.GetComponentsInChildren<UnityEngine.UI.Graphic>(true))
+                    g.raycastTarget = false;
+                foreach (var gr in go.GetComponentsInChildren<UnityEngine.UI.GraphicRaycaster>(true))
+                    gr.enabled = false;
+                foreach (var et in go.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true))
+                    et.enabled = false;
             }
 
+            // Optional: Dummy-Icon sichtbar machen
             if (placeholderIcon)
             {
                 var icon = go.transform.Find("Icon")?.GetComponent<UnityEngine.UI.Image>();
@@ -114,28 +148,25 @@ public class UISlotsPreview : MonoBehaviour
                 if (countObj) countObj.gameObject.SetActive(false);
             }
 
-            go.hideFlags |= HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
             Undo.RegisterCreatedObjectUndo(go, "Add Slot Preview");
         }
     }
 
     [ContextMenu("Preview ▶ Rebuild Now")]
-    void CM_Rebuild() { ClearPreview(); UpdatePreview(); }
+    void CM_Rebuild() { pendingRebuild = false; ClearPreview(); RebuildNow(); }
 
     [ContextMenu("Preview ✖ Clear")]
     void CM_Clear() { ClearPreview(); }
-#endif
 
     public void ClearPreview()
     {
-#if UNITY_EDITOR
         if (!slotParent) return;
         for (int i = slotParent.childCount - 1; i >= 0; i--)
         {
             var child = slotParent.GetChild(i);
-            if (child.GetComponent<PreviewMarker>())
+            if (child && child.name == PreviewName)
                 Undo.DestroyObjectImmediate(child.gameObject);
         }
-#endif
     }
+#endif
 }

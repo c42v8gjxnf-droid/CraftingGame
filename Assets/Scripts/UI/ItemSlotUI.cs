@@ -28,7 +28,7 @@ public class ItemSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private bool isInitialized;
 
-    private ItemStack Stack
+    public ItemStack Stack
     {
         get
         {
@@ -102,14 +102,14 @@ public void Init()
 
 
     // --- Drag & Drop ---
-public void OnBeginDrag(PointerEventData eventData)
-{
-    if (!isInitialized || Stack.IsEmpty) return;
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!isInitialized || Stack.IsEmpty) return;
 
-    // Drag-Ghost root
-    dragIcon = new GameObject("DragIcon", typeof(RectTransform)).GetComponent<RectTransform>();
-    dragIcon.SetParent(rootCanvas.transform, false);
-    dragIcon.SetAsLastSibling();
+        // Drag-Ghost root
+        dragIcon = new GameObject("DragIcon", typeof(RectTransform)).GetComponent<RectTransform>();
+        dragIcon.SetParent(rootCanvas.transform, false);
+        dragIcon.SetAsLastSibling();
 
     // Bild/Icon
     dragIconImage = dragIcon.gameObject.AddComponent<Image>();
@@ -164,12 +164,14 @@ public void OnBeginDrag(PointerEventData eventData)
         }
     }
 
-    // Drops zulassen
-    if (canvasGroup) canvasGroup.blocksRaycasts = false;
+        // Drops zulassen
+        if (canvasGroup) canvasGroup.blocksRaycasts = false;
 
-    // sofort an Maus positionieren
-    MoveDragIcon(eventData);
-}
+        // sofort an Maus positionieren
+        MoveDragIcon(eventData);
+
+        DragContext.Begin(Stack.Item, this);
+    }
 
 
     public void OnDrag(PointerEventData eventData)
@@ -184,18 +186,21 @@ public void OnBeginDrag(PointerEventData eventData)
         dragIcon = null;
         dragCountTMP = null;
         dragCountTextLegacy = null;
+
+        DragContext.End();
+        HideAllDropHints();
     }
 
 public void OnDrop(PointerEventData eventData)
     {
-        if (!isInitialized) return;
+        if (!isInitialized) { HideAllDropHints(); return; }
 
         var source = eventData.pointerDrag ? eventData.pointerDrag.GetComponent<ItemSlotUI>() : null;
-        if (source == null || source == this) return;
+        if (source == null || source == this) { HideAllDropHints(); return; }
 
         var from = source.Stack;
         var to = this.Stack;
-        if (from.IsEmpty) return;
+        if (from.IsEmpty) { HideAllDropHints(); return; }
 
         // Menge nach Modifikatoren bestimmen
         int qty = ComputeDropQuantity(from.Amount, source.owner, this.owner);
@@ -206,6 +211,7 @@ public void OnDrop(PointerEventData eventData)
             Inventory.MoveQuantity(from, to, qty);
             source.Refresh();
             Refresh();
+            HideAllDropHints();
             return;
         }
 
@@ -220,11 +226,13 @@ public void OnDrop(PointerEventData eventData)
             Inventory.Swap(to, from);
             source.Refresh();
             Refresh();
+            HideAllDropHints();
             return;
         }
 
         // Sonst: kein Move möglich (belegt & anderer Typ)
         // (Optional: Feedback/Shake/Sound)
+        HideAllDropHints();
     }
     private int ComputeDropQuantity(int available, OwnerType fromOwner, OwnerType toOwner)
         {
@@ -261,6 +269,12 @@ public void OnDrop(PointerEventData eventData)
     return owner == OwnerType.Inventory ? 1 : available;
 }
 
+    private void HideAllDropHints()
+    {
+        var hints = FindObjectsOfType<SlotHoverDropHint>();
+        foreach (var hint in hints)
+            if (hint) hint.HideNow();
+    }
 
 
     private void MoveDragIcon(PointerEventData eventData)

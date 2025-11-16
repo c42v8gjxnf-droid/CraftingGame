@@ -18,6 +18,22 @@ public class PanelToggle : MonoBehaviour
     [Tooltip("CanvasGroup am Dock (optional) für Raycast/Interactable Umschaltung).")]
     public CanvasGroup canvasGroup;
 
+    [Header("Mutual Exclusion")]
+    [Tooltip("Wenn true, schließt dieses Panel beim Show() alle anderen registrierten Panels.")]
+    public bool closeOthersOnShow = false;
+
+    [Tooltip("Wenn true, versteckt dieses Panel beim Hide() auch alle anderen Panels.")]
+    public bool closeOthersOnHide = false;
+
+    public event System.Action<PanelToggle> OnShown;
+    public event System.Action<PanelToggle> OnHidden;
+
+    [Header("Persistence")]
+    public bool persistState = false;
+    public UIPrefKey prefsKeyAsset;
+
+    string PrefsKey => (persistState && prefsKeyAsset) ? prefsKeyAsset.ResolveKey() : null;
+
     [Header("Animation")]
     [Min(0f)] public float slideDuration = 0.20f;
     [Min(0f)] public float bottomPadding = 16f; // wird nur bei Auto genutzt
@@ -47,8 +63,18 @@ public class PanelToggle : MonoBehaviour
     void Start()
     {
         RecalculatePositions();
-        if (startHidden) SetHiddenInstant();
-        else SetShownInstant();
+        var key = PrefsKey;
+        if (!string.IsNullOrEmpty(key) && PlayerPrefs.HasKey(key))
+        {
+            bool wantVisible = PlayerPrefs.GetInt(key, 0) == 1;
+            if (wantVisible) SetShownInstant();
+            else SetHiddenInstant();
+        }
+        else
+        {
+            if (startHidden) SetHiddenInstant();
+            else SetShownInstant();
+        }
     }
 
     /// <summary>
@@ -85,6 +111,7 @@ public class PanelToggle : MonoBehaviour
         panel.anchoredPosition = hiddenPos;
         if (openButton) openButton.SetActive(true);
         if (canvasGroup) { canvasGroup.interactable = false; canvasGroup.blocksRaycasts = false; }
+        SavePersisted(false);
     }
 
     void SetShownInstant()
@@ -94,6 +121,7 @@ public class PanelToggle : MonoBehaviour
         panel.anchoredPosition = shownPos;
         if (openButton) openButton.SetActive(false);
         if (canvasGroup) { canvasGroup.interactable = true; canvasGroup.blocksRaycasts = true; }
+        SavePersisted(true);
     }
 
     public void Show()
@@ -102,7 +130,11 @@ public class PanelToggle : MonoBehaviour
         if (IsVisible) return;
         IsVisible = true;
         if (openButton) openButton.SetActive(false);
-        SlideTo(shownPos, enableRaycasts: true);
+        SlideTo(shownPos, enableRaycasts: true, onEnd: () =>
+        {
+            OnShown?.Invoke(this);
+        });
+        SavePersisted(true);
     }
 
     public void Hide()
@@ -110,7 +142,12 @@ public class PanelToggle : MonoBehaviour
         EnsureSetup();
         if (!IsVisible) return;
         IsVisible = false;
-        SlideTo(hiddenPos, enableRaycasts: false, onEnd: () => { if (openButton) openButton.SetActive(true); });
+        SlideTo(hiddenPos, enableRaycasts: false, onEnd: () =>
+        {
+            if (openButton) openButton.SetActive(true);
+            OnHidden?.Invoke(this);
+        });
+        SavePersisted(false);
     }
 
     public void Toggle() { if (IsVisible) Hide(); else Show(); }
@@ -151,5 +188,12 @@ public class PanelToggle : MonoBehaviour
         }
 
         onEnd?.Invoke();
+    }
+
+    void SavePersisted(bool visible)
+    {
+        var key = PrefsKey;
+        if (string.IsNullOrEmpty(key)) return;
+        PlayerPrefs.SetInt(key, visible ? 1 : 0);
     }
 }
