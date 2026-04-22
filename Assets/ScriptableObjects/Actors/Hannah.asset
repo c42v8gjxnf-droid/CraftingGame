@@ -15,7 +15,7 @@ MonoBehaviour:
   id: hannah
   displayName: hannah
   role: {fileID: 11400000, guid: 2e635c56c4f83e4439c9181453ab1e17, type: 2}
-  portraitOverride: {fileID: 4929200868172850532, guid: dc3fa18431bca434c8b5c1a5c23734ab, type: 3}
+  portraitOverride: {fileID: -1391761669234975748, guid: cc3cf6b33a130934eb29258874271188, type: 3}
   spiritPerDay: 1
   hireGoldCost: 0
   happiness: 0.096

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: Lola
   displayName: Lola
   role: {fileID: 11400000, guid: 4b1796ef023a6a24085785542b9ea38d, type: 2}
-  portraitOverride: {fileID: 4929200868172850532, guid: dc3fa18431bca434c8b5c1a5c23734ab, type: 3}
+  portraitOverride: {fileID: 3498509797255048136, guid: aef4e1441cf99b642842c206dc277fec, type: 3}
   spiritPerDay: 3
   hireGoldCost: 100
   happiness: 0.5
