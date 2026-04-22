@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3087be2c1caace4a9d7492d98ba2d5e, type: 3}
-  m_Name: Gruen
+  m_Name: Boots
   m_EditorClassIdentifier: 
-  displayName: "Gr\xFCn"
+  displayName: Boots
+  tier: 0
   pattern:
-  - item: {fileID: 11400000, guid: f68c9d3a687f6dc4f965428a814273a9, type: 2}
+  - item: {fileID: 11400000, guid: 6dc621f1d67613347bfa1ec28c4f7dd3, type: 2}
     amount: 1
-  - item: {fileID: 11400000, guid: 41a2cd23ce62072408c222d1f4cdbc82, type: 2}
+  - item: {fileID: 11400000, guid: 98233fa7d0cf83a478dbf3820360eaab, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 6dd343b0011e96148955bdda69e4f67d, type: 2}
     amount: 1
   - item: {fileID: 0}
     amount: 0
@@ -44,7 +47,5 @@ MonoBehaviour:
     amount: 0
   - item: {fileID: 0}
     amount: 0
-  - item: {fileID: 0}
-    amount: 0
-  outputItem: {fileID: 11400000, guid: 6dc621f1d67613347bfa1ec28c4f7dd3, type: 2}
-  outputAmount: 3
+  outputItem: {fileID: 11400000, guid: 83dd38eeb2932894887331d8edb21942, type: 2}
+  outputAmount: 5
