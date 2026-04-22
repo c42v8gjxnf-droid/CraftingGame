@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d0340907ea066e49b31a5fc3525536d, type: 3}
-  m_Name: RES_Gold
+  m_Name: Customer count
   m_EditorClassIdentifier: 
-  id: Warp
-  icon: {fileID: 3301238525455117042, guid: dcf7a9732526d4943aec2cc887c14224, type: 3}
-  displayName: Warp
+  id: Customer count
+  icon: {fileID: -4057089465522319749, guid: b885a69f0814c52498574d7926a77576, type: 3}
+  displayName: Customer count
   maxStack: 99
-  description: Warp. The more the better.
+  description: How many people are there?

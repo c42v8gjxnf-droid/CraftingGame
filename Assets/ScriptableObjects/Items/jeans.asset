@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Weiss
+  m_Name: jeans
   m_EditorClassIdentifier: 
-  Id: weiss
-  DisplayName: "Wei\xDF"
-  Icon: {fileID: 21300000, guid: 4579304ceb788b640b9e0deab31061c9, type: 3}
+  Id: helmet
+  DisplayName: Weird Helmet
+  Icon: {fileID: 21300000, guid: 096ce8243287f9341aa62941d0d6baa3, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
-  tier: 3
-  equippable: 0
+  tier: 1
+  equippable: 1
   equipmentBonuses:
     travelSpeed: 0
     craftingSpeed: 0
     researchSpeed: 0
     forageSpeed: 0
     forageLuck: 0
-    tavernLuck: 0
+    tavernLuck: 0.15
     researchLuck: 0
   travelSpeedDescription: Travel speed
   craftingSpeedDescription: Crafting speed
@@ -36,5 +36,5 @@ MonoBehaviour:
   researchLuckDescription: Research luck
   equipmentBonusNote: Enter fractional bonuses (e.g., 0.15 = +15%, 1.0 = +100%).
     Speed bonuses multiply duration denominators; luck bonuses multiply chances.
-  price: 300
-  description: "Ein gef\xE4rbtes Item."
+  price: 200
+  description: Looks suspisious.

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
-  m_Name: Orange
+  m_Name: Bag
   m_EditorClassIdentifier: 
-  Id: orange
-  DisplayName: Orange
-  Icon: {fileID: 21300000, guid: 047413e491b89f947a3f0518d700ef78, type: 3}
+  Id: gruen
+  DisplayName: "Gr\xFCn"
+  Icon: {fileID: 21300000, guid: 5663917f2c6b57548a5516484f83d177, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 2

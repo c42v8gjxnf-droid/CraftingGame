@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d75e06c2391548c5ab5d457b3bb03cd2, type: 3}
-  m_Name: Actor_Sam
+  m_Name: Hannah
   m_EditorClassIdentifier: 
-  id: sam
-  displayName: Sam
+  id: hannah
+  displayName: hannaj
   role: {fileID: 11400000, guid: 2e635c56c4f83e4439c9181453ab1e17, type: 2}
-  portraitOverride: {fileID: 0}
+  portraitOverride: {fileID: 4929200868172850532, guid: dc3fa18431bca434c8b5c1a5c23734ab, type: 3}
   spiritPerDay: 1
   hireGoldCost: 0
   happiness: 0.096
@@ -28,6 +28,8 @@ MonoBehaviour:
   - Oops. That was majestic in my head.
   - If anyone asks, the floor attacked first.
   - Graceful trip executed perfectly.
+  idleThoughtIntervalMinSeconds: 17
+  idleThoughtIntervalMaxSeconds: 35
   happyIdleThoughts:
   - Sun on my face, zero emergencies.
   - Stretch break achieved. Productivity +1.

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d0340907ea066e49b31a5fc3525536d, type: 3}
-  m_Name: RES_Population
+  m_Name: Likeable
   m_EditorClassIdentifier: 
-  id: friends
-  icon: {fileID: -2554768595615315461, guid: efccf4f91461006469bbf92d4bd5e517, type: 3}
-  displayName: Friends
+  id: Likeable
+  icon: {fileID: -7204851269953947395, guid: ddc2260ae6c48f947bcc8f5c18321452, type: 3}
+  displayName: Likeable
   maxStack: 99
-  description: Your Actor slots
+  description: How much does your client really like you
