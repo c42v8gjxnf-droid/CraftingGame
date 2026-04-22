@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ActorsPanelUI : MonoBehaviour
 {
-    public ActorsManager manager;
+    public ActorManager manager;
     public Transform listParent;
     public GameObject actorCardPrefab;
     public ActorCraftingPanelUI craftingPanel;
