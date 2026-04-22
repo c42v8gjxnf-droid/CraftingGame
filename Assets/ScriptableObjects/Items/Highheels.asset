@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: Highheels
   m_EditorClassIdentifier: 
-  Id: 3
-  DisplayName: Lila
-  Icon: {fileID: 21300000, guid: fd3321e3383b0b846bfe44c8782ff70c, type: 3}
+  Id: High Heels
+  DisplayName: High Heels
+  Icon: {fileID: -8774774430572492355, guid: f8b3bf7eae3a66e4bac44a6aef392837, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 2

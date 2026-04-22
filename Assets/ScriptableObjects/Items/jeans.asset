@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: jeans
   m_EditorClassIdentifier: 
-  Id: helmet
-  DisplayName: Weird Helmet
-  Icon: {fileID: 21300000, guid: 096ce8243287f9341aa62941d0d6baa3, type: 3}
+  Id: Jeans
+  DisplayName: Jeans
+  Icon: {fileID: 7567685952273392222, guid: e6bc20594da0d7a43a136dd6ab3ae96e, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1

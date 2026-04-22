@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: BH
   m_EditorClassIdentifier: 
-  Id: 1
-  DisplayName: Edelsteine
-  Icon: {fileID: -6508908407416351038, guid: 93500fb32f7e0d342bc294c9d008f190, type: 3}
+  Id: BH
+  DisplayName: BH
+  Icon: {fileID: 7406312922525272657, guid: ab2f9c08cb5f5a2488df08c1527f194e, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hannah
   m_EditorClassIdentifier: 
   id: hannah
-  displayName: hannaj
+  displayName: hannah
   role: {fileID: 11400000, guid: 2e635c56c4f83e4439c9181453ab1e17, type: 2}
   portraitOverride: {fileID: 4929200868172850532, guid: dc3fa18431bca434c8b5c1a5c23734ab, type: 3}
   spiritPerDay: 1

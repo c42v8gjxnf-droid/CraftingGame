@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: T-shirt
   m_EditorClassIdentifier: 
-  Id: gelb
-  DisplayName: Gelb
-  Icon: {fileID: 21300000, guid: 096ce8243287f9341aa62941d0d6baa3, type: 3}
+  Id: T-shirt
+  DisplayName: T-shirt
+  Icon: {fileID: 7906969389095265939, guid: 857edf0364628fa4fbe386aab6dc6938, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 1

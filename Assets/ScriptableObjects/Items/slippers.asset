@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30344452f45122149be7ab00dbee6427, type: 3}
   m_Name: slippers
   m_EditorClassIdentifier: 
-  Id: orange
-  DisplayName: Orange
-  Icon: {fileID: 21300000, guid: 047413e491b89f947a3f0518d700ef78, type: 3}
+  Id: Slippers
+  DisplayName: Slippers
+  Icon: {fileID: -359147010418861633, guid: abfff5fee0fd7f240b5d58c96b211ea4, type: 3}
   MaxStack: 99
   producer: {fileID: 0}
   tier: 2
